@@ -3,24 +3,13 @@
 #include <string.h>
 #include <math.h>
 
-char* getExpression()
+#define MAX_EXPRESSION_LEN 1024
+
+void getExpression(char* expression)
 {
-    char* expression = NULL;
-    int length = 0;
-    char ch;
-
     printf("f = ");
-    while ((ch = getchar()) != '\n')
-    {
-        length++;
-        char* temp = (char*)realloc(expression, (length + 1) * sizeof(char));
-        if (!temp) exit(EXIT_FAILURE);
-        expression = temp;
-        expression[length - 1] = ch;
-        expression[length] = '\0';
-    }
-
-    return expression;
+    fgets(expression, MAX_EXPRESSION_LEN, stdin);
+    expression[strlen(expression) - 1] = '\0';
 }
 
 char* getNames(char* expression)
@@ -273,7 +262,8 @@ void TableCreation(int size, int length, char* expression, char* names)
 
 int main()
 {
-    char* expression = getExpression();
+    char expression[MAX_EXPRESSION_LEN] = { 0 };
+    getExpression(expression);
     int length = strlen(expression);
 
     char* names = getNames(expression);
