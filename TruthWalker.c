@@ -84,16 +84,16 @@ void unifyingAlphabetSort(char* names, int variables)
     }
 }
 
-void printVariableValues(int* variableValues, int size)
+void printVariableValues(int* variableValues, int variables)
 {
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < variables; i++)
         printf("%d ", variableValues[i]);
 }
 
-_Bool fullUnityCheck(int* variableValues, int size)
+_Bool fullUnityCheck(int* variableValues, int variables)
 {
     _Bool full = 1;
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < variables; i++)
     {
         if (!variableValues[i])
             full = 0;
@@ -126,6 +126,7 @@ char* getNumericExpression(char* expression, char* names, int* variablesValues)
     size_t const variablesAmount = strlen(names);
 
     char* numericExpression = (char*)malloc((expressionLength + 1) * sizeof(char));
+    if (!numericExpression) exit(EXIT_FAILURE);
     numericExpression[expressionLength] = '\0';
 
     for (int i = 0; i < expressionLength; i++)
@@ -229,9 +230,9 @@ char* parseExpression(char* expression)
     return expression;
 }
 
-void TableCreation(int size, int length, char* expression, char* names)
+void TableCreation(char* expression, char* names, int length, int variables)
 {
-    int* variableValues = (int*)calloc(size, sizeof(int));
+    int* variableValues = (int*)calloc(variables, sizeof(int));
     if (!variableValues) exit(EXIT_FAILURE);
     _Bool interUnityFull = 1;
 
@@ -242,26 +243,26 @@ void TableCreation(int size, int length, char* expression, char* names)
 
     while (1)
     {
-        printVariableValues(variableValues, size);
+        printVariableValues(variableValues, variables);
         printf("%s", parseExpression(getNumericExpression(expression, names, variableValues)));
         printf("\n");
 
-        if (fullUnityCheck(variableValues, size))
+        if (fullUnityCheck(variableValues, variables))
             break;
-        for (int i = size - 1; i >= 0; i--)
+        for (int i = variables - 1; i >= 0; i--)
         {
             if (variableValues[i] && !interUnityFull)
             {
-                variableValues[size - 1] = 1;
+                variableValues[variables - 1] = 1;
                 interUnityFull = 1;
                 break;
             }
             if (!variableValues[i] && interUnityFull)
             {
                 variableValues[i] = 1;
-                if (i < size - 1)
+                if (i < variables - 1)
                 {
-                    for (int j = size - 1; j > i; j--)
+                    for (int j = variables - 1; j > i; j--)
                         variableValues[j] = 0;
                     interUnityFull = 0;
                 }
@@ -280,5 +281,5 @@ int main()
     int variables = strlen(names);
     unifyingAlphabetSort(names, variables);
 
-    TableCreation(variables, length, expression, names);
+    TableCreation(expression, names, length, variables);
 }
