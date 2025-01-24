@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -172,7 +173,7 @@ char* parseExpression(char* expression)
         }
     }
 
-    for (int i = 0; i < expressionLength; i++)
+    for (int i = 0; expression[i] != '\0'; i++)
     {
         if (expression[i] == '!')
         {
@@ -183,7 +184,7 @@ char* parseExpression(char* expression)
         }
     }
 
-    for (int i = 0; i < expressionLength; i++)
+    for (int i = 0; expression[i] != '\0'; i++)
     {
         if (expression[i] == '&')
         {
@@ -191,10 +192,11 @@ char* parseExpression(char* expression)
                 expression = replace(expression, "1", i - 2, 5);
             else
                 expression = replace(expression, "0", i - 2, 5);
+            i -= 2;
         }
     }
 
-    for (int i = 0; i < expressionLength; i++)
+    for (int i = 0; expression[i] != '\0'; i++)
     {
         if (expression[i] == '|')
         {
@@ -202,10 +204,11 @@ char* parseExpression(char* expression)
                 expression = replace(expression, "1", i - 2, 5);
             else
                 expression = replace(expression, "0", i - 2, 5);
+            i -= 2;
         }
     }
 
-    for (int i = 0; i < expressionLength; i++)
+    for (int i = 0; expression[i] != '\0'; i++)
     {
         if (expression[i] == '=' && expression[i + 1] == '>')
         {
@@ -213,10 +216,11 @@ char* parseExpression(char* expression)
                 expression = replace(expression, "1", i - 2, 6);
             else
                 expression = replace(expression, "0", i - 2, 6);
+            i -= 2;
         }
     }
 
-    for (int i = 0; i < expressionLength; i++)
+    for (int i = 0; expression[i] != '\0'; i++)
     {
         if (expression[i] == '=' && expression[i + 1] == ' ')
         {
@@ -224,6 +228,7 @@ char* parseExpression(char* expression)
                 expression = replace(expression, "1", i - 2, 5);
             else
                 expression = replace(expression, "0", i - 2, 5);
+            i -= 2;
         }
     }
 
