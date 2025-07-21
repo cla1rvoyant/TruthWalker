@@ -157,8 +157,13 @@ char* parseExpression(char* expression)
             int interExpressionLength = 0;
             int interIndex = i + 1;
             char* interExpression = NULL;
-            while (expression[interIndex] != ')')
+            int bracketsCounter = 0;
+            while (expression[interIndex] != ')' || bracketsCounter > 0)
             {
+                if (expression[interIndex] == ')' && bracketsCounter > 0)
+                    bracketsCounter--;
+                if (expression[interIndex] == '(')
+                    bracketsCounter++;
                 interExpressionLength++;
                 char* temp = (char*)realloc(interExpression, (interExpressionLength + 1) * sizeof(char));
                 if (!temp) exit(EXIT_FAILURE);
